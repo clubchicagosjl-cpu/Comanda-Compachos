@@ -116,6 +116,7 @@ function mapSaleRow(row) {
     table: row.table_number,
     items: row.items,
     total: Number(row.total),
+    payment: row.payment_method || 'efectivo',
   };
 }
 
@@ -261,7 +262,7 @@ export default function App() {
     if (cart.length > 0) saveOpenOrder(selectedKey, cart, cartData.notes);
   }
 
-  async function chargeOrderForKey(key) {
+  async function chargeOrderForKey(key, paymentMethod) {
     const data = openOrdersData[key];
     if (!data || data.items.length === 0) return;
     const total = data.items.reduce((s, l) => s + l.price * l.qty, 0);
@@ -274,6 +275,7 @@ export default function App() {
       table_number: keyIsTable ? key.replace('mesa-', '') : null,
       items: data.items,
       total,
+      payment_method: paymentMethod,
     };
     const { data: inserted } = await supabase.from('sales').insert(sale).select();
     if (inserted && inserted[0]) setOrders((prev) => [mapSaleRow(inserted[0]), ...prev]);
@@ -282,7 +284,7 @@ export default function App() {
     setConfirmFlash(true);
     setTimeout(() => setConfirmFlash(false), 1400);
   }
-  function chargeOrder() { chargeOrderForKey(selectedKey); }
+  function chargeOrder(paymentMethod) { chargeOrderForKey(selectedKey, paymentMethod); }
 
   async function clearCartForKey(key) {
     const data = openOrdersData[key];
@@ -328,22 +330,27 @@ export default function App() {
   const totalVentas = filteredOrders.reduce((s, o) => s + o.total, 0);
   const ventasLlevar = filteredOrders.filter((o) => o.type === 'llevar').reduce((s, o) => s + o.total, 0);
   const ventasMesa = filteredOrders.filter((o) => o.type === 'mesa').reduce((s, o) => s + o.total, 0);
+  const ventasEfectivo = filteredOrders.filter((o) => o.payment !== 'yape').reduce((s, o) => s + o.total, 0);
+  const ventasYape = filteredOrders.filter((o) => o.payment === 'yape').reduce((s, o) => s + o.total, 0);
   const ticketProm = filteredOrders.length ? totalVentas / filteredOrders.length : 0;
 
   function exportExcel() {
     const byDay = {};
     filteredOrders.forEach((o) => {
-      byDay[o.date] = byDay[o.date] || { fecha: o.date, pedidos: 0, llevar: 0, mesa: 0, total: 0 };
+      byDay[o.date] = byDay[o.date] || { fecha: o.date, pedidos: 0, llevar: 0, mesa: 0, efectivo: 0, yape: 0, total: 0 };
       byDay[o.date].pedidos += 1;
       byDay[o.date][o.type === 'llevar' ? 'llevar' : 'mesa'] += o.total;
+      byDay[o.date][o.payment === 'yape' ? 'yape' : 'efectivo'] += o.total;
       byDay[o.date].total += o.total;
     });
     const resumen = Object.values(byDay).sort((a, b) => (a.fecha < b.fecha ? 1 : -1)).map((d) => ({
       Fecha: d.fecha, 'N° Pedidos': d.pedidos, 'Ventas Para Llevar (S/)': d.llevar.toFixed(2),
-      'Ventas Mesa (S/)': d.mesa.toFixed(2), 'Total del Día (S/)': d.total.toFixed(2),
+      'Ventas Mesa (S/)': d.mesa.toFixed(2), 'Efectivo (S/)': d.efectivo.toFixed(2), 'Yape (S/)': d.yape.toFixed(2),
+      'Total del Día (S/)': d.total.toFixed(2),
     }));
     const detalle = filteredOrders.map((o) => ({
       Fecha: o.date, Hora: o.time, Tipo: o.type === 'llevar' ? 'Para llevar' : `Mesa ${o.table}`,
+      Pago: o.payment === 'yape' ? 'Yape' : 'Efectivo',
       Productos: o.items.map((i) => `${i.qty}x ${i.name}`).join('; '),
       'Total (S/)': o.total.toFixed(2),
     }));
@@ -479,6 +486,14 @@ export default function App() {
           border-radius:10px; font-weight:700; font-size:16px; cursor:pointer; letter-spacing:0.03em; min-height:52px; }
         .charge-btn:disabled { background:#c8bfa8; cursor:not-allowed; }
         .charge-btn:hover:not(:disabled) { background:var(--chili-dark); }
+        .pay-row { display:flex; gap:8px; margin-top:10px; }
+        .pay-btn { flex:1; border:none; padding:14px 8px; border-radius:10px; font-weight:700; font-size:14px;
+          cursor:pointer; min-height:50px; }
+        .pay-btn:disabled { opacity:0.4; cursor:not-allowed; }
+        .pay-cash { background:var(--green); color:#fff; }
+        .pay-cash:hover:not(:disabled) { background:#3f7f50; }
+        .pay-yape { background:#6739b7; color:#fff; }
+        .pay-yape:hover:not(:disabled) { background:#542d94; }
         .clear-btn { width:100%; margin-top:8px; background:transparent; color:#8a8064; border:1px dashed #b8ac8a; padding:10px;
           border-radius:8px; font-weight:600; font-size:13px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; }
         .empty-ticket { text-align:center; color:#8a8064; font-size:13px; padding:34px 0; }
@@ -691,9 +706,14 @@ export default function App() {
                   <button className="print-btn" disabled={cart.length === 0} onClick={() => printComanda(selectedKey)}>
                     <Printer size={15}/> Imprimir comanda
                   </button>
-                  <button className="charge-btn" disabled={cart.length === 0} onClick={chargeOrder}>
-                    Cobrar y liberar {isTable ? 'mesa' : 'pedido'}
-                  </button>
+                  <div className="pay-row">
+                    <button className="pay-btn pay-cash" disabled={cart.length === 0} onClick={() => chargeOrder('efectivo')}>
+                      💵 Efectivo
+                    </button>
+                    <button className="pay-btn pay-yape" disabled={cart.length === 0} onClick={() => chargeOrder('yape')}>
+                      📱 Yape
+                    </button>
+                  </div>
                   {cart.length > 0 && (
                     <button className="clear-btn" onClick={clearCart}><RotateCcw size={13}/> Vaciar pedido sin cobrar</button>
                   )}
@@ -740,9 +760,10 @@ export default function App() {
                       <button className="btn-secondary" onClick={() => { setSelectedKey(key); setTab('pedido'); }}>
                         <ArrowRight size={14}/> Agregar más
                       </button>
-                      <button className="btn-primary-open" onClick={() => chargeOrderForKey(key)}>
-                        Cobrar y liberar
-                      </button>
+                    </div>
+                    <div className="pay-row">
+                      <button className="pay-btn pay-cash" onClick={() => chargeOrderForKey(key, 'efectivo')}>💵 Efectivo</button>
+                      <button className="pay-btn pay-yape" onClick={() => chargeOrderForKey(key, 'yape')}>📱 Yape</button>
                     </div>
                   </div>
                 );
@@ -769,22 +790,24 @@ export default function App() {
               <div className="stat-card"><div className="k">N° de pedidos</div><div className="v">{filteredOrders.length}</div></div>
               <div className="stat-card"><div className="k">Ticket promedio</div><div className="v">{fmt(ticketProm)}</div></div>
               <div className="stat-card"><div className="k">Para llevar / Mesa</div><div className="v" style={{fontSize:16}}>{fmt(ventasLlevar)} / {fmt(ventasMesa)}</div></div>
+              <div className="stat-card"><div className="k">Efectivo / Yape</div><div className="v" style={{fontSize:16}}>{fmt(ventasEfectivo)} / {fmt(ventasYape)}</div></div>
             </div>
 
             <table>
-              <thead><tr><th>Hora</th><th>Tipo</th><th>Productos</th><th>Total</th><th></th></tr></thead>
+              <thead><tr><th>Hora</th><th>Tipo</th><th>Pago</th><th>Productos</th><th>Total</th><th></th></tr></thead>
               <tbody>
                 {filteredOrders.map((o) => (
                   <tr key={o.id}>
                     <td className="mono-cell">{o.date} {o.time}</td>
                     <td>{o.type === 'llevar' ? 'Para llevar' : `Mesa ${o.table}`}</td>
+                    <td>{o.payment === 'yape' ? '📱 Yape' : '💵 Efectivo'}</td>
                     <td>{o.items.map((i) => `${i.qty}x ${i.name}`).join(', ')}</td>
                     <td className="mono-cell">{fmt(o.total)}</td>
                     <td><Trash2 size={16} className="del-icon" onClick={() => deleteSale(o.id)} /></td>
                   </tr>
                 ))}
                 {filteredOrders.length === 0 && (
-                  <tr><td colSpan="5" style={{textAlign:'center', color:'var(--muted)', padding:24}}>No hay pedidos en este rango de fechas.</td></tr>
+                  <tr><td colSpan="6" style={{textAlign:'center', color:'var(--muted)', padding:24}}>No hay pedidos en este rango de fechas.</td></tr>
                 )}
               </tbody>
             </table>
