@@ -277,7 +277,12 @@ export default function App() {
       total,
       payment_method: paymentMethod,
     };
-    const { data: inserted } = await supabase.from('sales').insert(sale).select();
+    const { data: inserted, error } = await supabase.from('sales').insert(sale).select();
+    if (error) {
+      console.error('Error al guardar la venta:', error);
+      alert('No se pudo guardar la venta en el Historial. La mesa/pedido NO se liberó, así que no perdiste nada — inténtalo de nuevo.\n\nDetalle técnico: ' + error.message);
+      return;
+    }
     if (inserted && inserted[0]) setOrders((prev) => [mapSaleRow(inserted[0]), ...prev]);
     await supabase.from('open_orders').delete().eq('order_key', key);
     setOpenOrdersData((prev) => { const n = { ...prev }; delete n[key]; return n; });
@@ -850,3 +855,4 @@ export default function App() {
     </div>
   );
 }
+
