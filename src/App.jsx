@@ -6,8 +6,8 @@ import { supabase, supabaseConfigured } from './supabaseClient';
 const CATEGORIES = ['Hamburguesas', 'Salchipapa', 'Salchibroaster', 'Salchialitas', 'Broaster', 'Mostrito', 'Sandwich Broaster', 'Alitas', 'Enchiladas', 'Jugos', 'Bebidas', 'Calientes', 'Extras'];
 
 const DEFAULT_MENU = [
-  { name: 'ClÃ¡sica (Carne)', category: 'Hamburguesas', price: 10.0 },
-  { name: 'ClÃ¡sica (Pollo/Chorizo)', category: 'Hamburguesas', price: 10.5 },
+  { name: 'Clásica (Carne)', category: 'Hamburguesas', price: 10.0 },
+  { name: 'Clásica (Pollo/Chorizo)', category: 'Hamburguesas', price: 10.5 },
   { name: 'Especial (Carne)', category: 'Hamburguesas', price: 11.5 },
   { name: 'Especial (Pollo/Chorizo)', category: 'Hamburguesas', price: 12.0 },
   { name: 'Americana (Carne)', category: 'Hamburguesas', price: 11.0 },
@@ -26,7 +26,7 @@ const DEFAULT_MENU = [
   { name: 'Hawaiiana (Pollo/Chorizo)', category: 'Hamburguesas', price: 14.5 },
   { name: 'Royal Especial (Carne)', category: 'Hamburguesas', price: 14.5 },
   { name: 'Royal Especial (Pollo/Chorizo)', category: 'Hamburguesas', price: 15.0 },
-  { name: 'ClÃ¡sica', category: 'Salchipapa', price: 11.0 },
+  { name: 'Clásica', category: 'Salchipapa', price: 11.0 },
   { name: 'c/ Huevo', category: 'Salchipapa', price: 12.0 },
   { name: 'c/ Queso', category: 'Salchipapa', price: 13.0 },
   { name: 'c/ Chorizo', category: 'Salchipapa', price: 13.0 },
@@ -37,8 +37,8 @@ const DEFAULT_MENU = [
   { name: 'c/ Nuggets (4 und)', category: 'Salchipapa', price: 15.0 },
   { name: 'Mixta (huevo y tocino)', category: 'Salchipapa', price: 14.5 },
   { name: 'Especial (chorizo, huevo y tocino)', category: 'Salchipapa', price: 16.5 },
-  { name: 'A lo Pobre (plÃ¡tano y huevo)', category: 'Salchipapa', price: 13.5 },
-  { name: 'c/ ChicharrÃ³n de Pollo', category: 'Salchipapa', price: 15.5 },
+  { name: 'A lo Pobre (plátano y huevo)', category: 'Salchipapa', price: 13.5 },
+  { name: 'c/ Chicharrón de Pollo', category: 'Salchipapa', price: 15.5 },
   { name: 'Ala', category: 'Salchibroaster', price: 15.0 },
   { name: 'Pierna', category: 'Salchibroaster', price: 16.0 },
   { name: 'Encuentro', category: 'Salchibroaster', price: 16.5 },
@@ -53,7 +53,7 @@ const DEFAULT_MENU = [
   { name: 'Pierna', category: 'Mostrito', price: 17.0 },
   { name: 'Encuentro', category: 'Mostrito', price: 17.5 },
   { name: 'Pecho', category: 'Mostrito', price: 18.5 },
-  { name: 'Sandwich Broaster ClÃ¡sico', category: 'Sandwich Broaster', price: 15.0 },
+  { name: 'Sandwich Broaster Clásico', category: 'Sandwich Broaster', price: 15.0 },
   { name: 'Sandwich Broaster c/ Salsa Especial', category: 'Sandwich Broaster', price: 16.5 },
   { name: '6 Alitas + Papas + Ensalada', category: 'Alitas', price: 17.0 },
   { name: '18 Alitas + Papas + Ensalada (3 sabores)', category: 'Alitas', price: 49.5 },
@@ -71,12 +71,12 @@ const DEFAULT_MENU = [
   { name: 'Twister', category: 'Enchiladas', price: 15.0 },
   { name: 'Papaya', category: 'Jugos', price: 8.0 },
   { name: 'Surtido', category: 'Jugos', price: 8.0 },
-  { name: 'PiÃ±a', category: 'Jugos', price: 8.0 },
+  { name: 'Piña', category: 'Jugos', price: 8.0 },
   { name: 'Especial', category: 'Jugos', price: 10.0 },
   { name: 'Fresa', category: 'Jugos', price: 9.0 },
-  { name: 'PlÃ¡tano c/ leche', category: 'Jugos', price: 10.0 },
+  { name: 'Plátano c/ leche', category: 'Jugos', price: 10.0 },
   { name: 'Mango', category: 'Jugos', price: 10.0 },
-  { name: 'LÃºcuma c/ leche', category: 'Jugos', price: 12.0 },
+  { name: 'Lúcuma c/ leche', category: 'Jugos', price: 12.0 },
   { name: 'Fresa c/ leche', category: 'Jugos', price: 10.0 },
   { name: 'Mango c/ leche', category: 'Jugos', price: 12.0 },
   { name: 'Papaya c/ leche', category: 'Jugos', price: 10.0 },
@@ -87,19 +87,19 @@ const DEFAULT_MENU = [
   { name: 'Limonada (jarra)', category: 'Bebidas', price: 12.0 },
   { name: 'Limonada Frozen (vaso)', category: 'Bebidas', price: 10.0 },
   { name: 'Limonada Frozen (jarra)', category: 'Bebidas', price: 16.0 },
-  { name: 'MaracuyÃ¡ (vaso)', category: 'Bebidas', price: 8.0 },
-  { name: 'MaracuyÃ¡ (jarra)', category: 'Bebidas', price: 12.0 },
-  { name: 'MaracuyÃ¡ Frozen (vaso)', category: 'Bebidas', price: 10.0 },
-  { name: 'MaracuyÃ¡ Frozen (jarra)', category: 'Bebidas', price: 16.0 },
+  { name: 'Maracuyá (vaso)', category: 'Bebidas', price: 8.0 },
+  { name: 'Maracuyá (jarra)', category: 'Bebidas', price: 12.0 },
+  { name: 'Maracuyá Frozen (vaso)', category: 'Bebidas', price: 10.0 },
+  { name: 'Maracuyá Frozen (jarra)', category: 'Bebidas', price: 16.0 },
   { name: 'Inca/Coca Personal', category: 'Bebidas', price: 2.0 },
   { name: 'Inca/Coca Litro', category: 'Bebidas', price: 6.0 },
   { name: 'Gordita', category: 'Bebidas', price: 4.5 },
-  { name: 'Pepsi Â½ L', category: 'Bebidas', price: 2.5 },
+  { name: 'Pepsi ½ L', category: 'Bebidas', price: 2.5 },
   { name: 'Pepsi 1 L', category: 'Bebidas', price: 4.5 },
-  { name: 'TÃ© / AnÃ­s / Manzanilla', category: 'Calientes', price: 2.5 },
-  { name: 'CafÃ©', category: 'Calientes', price: 3.5 },
-  { name: 'CafÃ© c/ leche', category: 'Calientes', price: 5.0 },
-  { name: 'PorciÃ³n de Arroz', category: 'Extras', price: 2.0 },
+  { name: 'Té / Anís / Manzanilla', category: 'Calientes', price: 2.5 },
+  { name: 'Café', category: 'Calientes', price: 3.5 },
+  { name: 'Café c/ leche', category: 'Calientes', price: 5.0 },
+  { name: 'Porción de Arroz', category: 'Extras', price: 2.0 },
 ];
 
 const todayISO = () => new Date().toISOString().slice(0, 10);
@@ -127,7 +127,7 @@ export default function App() {
       <div style={{ fontFamily: 'sans-serif', padding: 40, maxWidth: 600, margin: '0 auto', color: '#333' }}>
         <h2>Falta configurar Supabase</h2>
         <p>Esta app necesita las variables de entorno <code>VITE_SUPABASE_URL</code> y <code>VITE_SUPABASE_ANON_KEY</code>.</p>
-        <p>Revisa el archivo <code>README.md</code> del proyecto para los pasos de configuraciÃ³n en Vercel.</p>
+        <p>Revisa el archivo <code>README.md</code> del proyecto para los pasos de configuración en Vercel.</p>
       </div>
     );
   }
@@ -281,7 +281,7 @@ export default function App() {
     const { data: inserted, error } = await supabase.from('sales').insert(sale).select();
     if (error) {
       console.error('Error al guardar la venta:', error);
-      alert('No se pudo guardar la venta en el Historial. La mesa/pedido NO se liberÃ³, asÃ­ que no perdiste nada â€” intÃ©ntalo de nuevo.\n\nDetalle tÃ©cnico: ' + error.message);
+      alert('No se pudo guardar la venta en el Historial. La mesa/pedido NO se liberó, así que no perdiste nada — inténtalo de nuevo.\n\nDetalle técnico: ' + error.message);
       return;
     }
     if (inserted && inserted[0]) setOrders((prev) => [mapSaleRow(inserted[0]), ...prev]);
@@ -295,7 +295,7 @@ export default function App() {
   async function clearCartForKey(key) {
     const data = openOrdersData[key];
     if (!data || data.items.length === 0) return;
-    if (!window.confirm('Â¿Vaciar este pedido sin cobrarlo?')) return;
+    if (!window.confirm('¿Vaciar este pedido sin cobrarlo?')) return;
     await supabase.from('open_orders').delete().eq('order_key', key);
     setOpenOrdersData((prev) => { const n = { ...prev }; delete n[key]; return n; });
   }
@@ -350,9 +350,9 @@ export default function App() {
       byDay[o.date].total += o.total;
     });
     const resumen = Object.values(byDay).sort((a, b) => (a.fecha < b.fecha ? 1 : -1)).map((d) => ({
-      Fecha: d.fecha, 'NÂ° Pedidos': d.pedidos, 'Ventas Para Llevar (S/)': d.llevar.toFixed(2),
+      Fecha: d.fecha, 'N° Pedidos': d.pedidos, 'Ventas Para Llevar (S/)': d.llevar.toFixed(2),
       'Ventas Mesa (S/)': d.mesa.toFixed(2), 'Efectivo (S/)': d.efectivo.toFixed(2), 'Yape (S/)': d.yape.toFixed(2),
-      'Total del DÃ­a (S/)': d.total.toFixed(2),
+      'Total del Día (S/)': d.total.toFixed(2),
     }));
     const detalle = [];
     filteredOrders
@@ -361,13 +361,13 @@ export default function App() {
       .forEach((o) => {
         o.items.forEach((i) => {
           detalle.push({
-            'NÂ° Pedido': o.orderNumber,
+            'N° Pedido': o.orderNumber,
             Fecha: o.date,
             Hora: o.time,
             Tipo: o.type === 'llevar' ? 'Para llevar' : `Mesa ${o.table}`,
             Pago: o.payment === 'yape' ? 'Yape' : 'Efectivo',
             Producto: i.name,
-            CategorÃ­a: i.category,
+            'Categoria': i.category,
             Cantidad: i.qty,
             'Precio Unitario (S/)': i.price.toFixed(2),
             'Subtotal (S/)': (i.price * i.qty).toFixed(2),
@@ -381,10 +381,10 @@ export default function App() {
       prodMap[i.name].ingresos += i.qty * i.price;
     }));
     const productos = Object.values(prodMap).sort((a, b) => b.ingresos - a.ingresos).map((p) => ({
-      Producto: p.producto, CategorÃ­a: p.categoria, 'Cantidad Vendida': p.cantidad, 'Ingresos (S/)': p.ingresos.toFixed(2),
+      Producto: p.producto, 'Categoria': p.categoria, 'Cantidad Vendida': p.cantidad, 'Ingresos (S/)': p.ingresos.toFixed(2),
     }));
     const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(resumen), 'Resumen por dÃ­a');
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(resumen), 'Resumen por día');
     XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(detalle), 'Detalle de pedidos');
     XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(productos), 'Productos vendidos');
     XLSX.writeFile(wb, `Ventas_${dateFrom}_a_${dateTo}.xlsx`);
@@ -422,7 +422,7 @@ export default function App() {
   if (!loaded) {
     return (
       <div style={{ fontFamily: 'sans-serif', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#20262a', color: '#eee9de' }}>
-        Cargando datosâ€¦
+        Cargando datos…
       </div>
     );
   }
@@ -608,8 +608,8 @@ export default function App() {
         {printOrder && (
           <div>
             <div className="print-title">COMPACHO'S</div>
-            <div className="print-sub">COMANDA Â· COCINA</div>
-            <div className="print-meta">{printOrder.label} Â· {printOrder.date} {printOrder.time}</div>
+            <div className="print-sub">COMANDA · COCINA</div>
+            <div className="print-meta">{printOrder.label} · {printOrder.date} {printOrder.time}</div>
             <hr />
             {printOrder.items.map((l, idx) => (
               <div className="print-line" key={idx}><span className="print-qty">{l.qty}x</span>{l.name}</div>
@@ -641,9 +641,9 @@ export default function App() {
             <Receipt size={17}/> Pedidos Abiertos {openKeys.length > 0 && <span className="badge-count">{openKeys.length}</span>}
           </button>
           <button className={`tab-btn ${tab === 'historial' ? 'active' : ''}`} onClick={() => setTab('historial')}><ClipboardList size={17}/> Historial</button>
-          <button className={`tab-btn ${tab === 'menu' ? 'active' : ''}`} onClick={() => setTab('menu')}><Table2 size={17}/> MenÃº</button>
+          <button className={`tab-btn ${tab === 'menu' ? 'active' : ''}`} onClick={() => setTab('menu')}><Table2 size={17}/> Menú</button>
         </div>
-        <span style={{ fontSize: 11, color: 'var(--green)' }}>â— En lÃ­nea</span>
+        <span style={{ fontSize: 11, color: 'var(--green)' }}>● En línea</span>
       </div>
 
       <div className="content">
@@ -672,8 +672,8 @@ export default function App() {
                 })}
               </div>
               <div className="num-tables-ctrl">
-                NÂ° mesas
-                <button onClick={() => changeNumTables(numTables - 1)}>â€“</button>
+                N° mesas
+                <button onClick={() => changeNumTables(numTables - 1)}>–</button>
                 <span>{numTables}</span>
                 <button onClick={() => changeNumTables(numTables + 1)}>+</button>
               </div>
@@ -699,8 +699,8 @@ export default function App() {
               <div className="ticket-wrap">
                 <div className="ticket">
                   <h3>Comanda</h3>
-                  <div className="sub">{isTable ? `MESA ${tableNum}` : 'PARA LLEVAR'} Â· {new Date().toLocaleDateString('es-PE')}</div>
-                  {cart.length === 0 && <div className="empty-ticket">Toca un producto del menÃº<br/>para agregarlo al pedido</div>}
+                  <div className="sub">{isTable ? `MESA ${tableNum}` : 'PARA LLEVAR'} · {new Date().toLocaleDateString('es-PE')}</div>
+                  {cart.length === 0 && <div className="empty-ticket">Toca un producto del menú<br/>para agregarlo al pedido</div>}
                   {cart.map((l) => (
                     <div className="ticket-line" key={l.menuId}>
                       <button className="qty-btn" onClick={() => changeQty(l.menuId, -1)}><Minus size={13}/></button>
@@ -718,7 +718,7 @@ export default function App() {
                     </div>
                   )}
                   {cart.length > 0 && (
-                    <textarea className="notes-input" rows={2} placeholder="Notas para cocina (opcional): sin cebolla, tÃ©rmino medio, etc."
+                    <textarea className="notes-input" rows={2} placeholder="Notas para cocina (opcional): sin cebolla, término medio, etc."
                       value={cartData.notes || ''}
                       onChange={(e) => updateNotes(e.target.value)}
                       onBlur={commitNotes} />
@@ -728,10 +728,10 @@ export default function App() {
                   </button>
                   <div className="pay-row">
                     <button className="pay-btn pay-cash" disabled={cart.length === 0} onClick={() => chargeOrder('efectivo')}>
-                      ðŸ’µ Efectivo
+                      💵 Efectivo
                     </button>
                     <button className="pay-btn pay-yape" disabled={cart.length === 0} onClick={() => chargeOrder('yape')}>
-                      ðŸ“± Yape
+                      📱 Yape
                     </button>
                   </div>
                   {cart.length > 0 && (
@@ -740,7 +740,7 @@ export default function App() {
                 </div>
               </div>
             </div>
-            {confirmFlash && <div className="flash-ok">Pedido cobrado âœ“</div>}
+            {confirmFlash && <div className="flash-ok">Pedido cobrado ✓</div>}
           </>
         )}
 
@@ -763,7 +763,7 @@ export default function App() {
                       <button className="icon-btn" title="Imprimir comanda" onClick={() => printComanda(key)}><Printer size={16}/></button>
                     </div>
                     <div className="open-elapsed"><Clock size={13}/> Abierta hace {minutesAgo(data.opened_at)} min</div>
-                    {data.notes && <div className="open-note">ðŸ“ {data.notes}</div>}
+                    {data.notes && <div className="open-note">📝 {data.notes}</div>}
                     <div className="open-items">
                       {items.map((l) => (
                         <div className="open-item-line" key={l.menuId}>
@@ -778,18 +778,18 @@ export default function App() {
                     </div>
                     <div className="open-actions">
                       <button className="btn-secondary" onClick={() => { setSelectedKey(key); setTab('pedido'); }}>
-                        <ArrowRight size={14}/> Agregar mÃ¡s
+                        <ArrowRight size={14}/> Agregar más
                       </button>
                     </div>
                     <div className="pay-row">
-                      <button className="pay-btn pay-cash" onClick={() => chargeOrderForKey(key, 'efectivo')}>ðŸ’µ Efectivo</button>
-                      <button className="pay-btn pay-yape" onClick={() => chargeOrderForKey(key, 'yape')}>ðŸ“± Yape</button>
+                      <button className="pay-btn pay-cash" onClick={() => chargeOrderForKey(key, 'efectivo')}>💵 Efectivo</button>
+                      <button className="pay-btn pay-yape" onClick={() => chargeOrderForKey(key, 'yape')}>📱 Yape</button>
                     </div>
                   </div>
                 );
               })}
             </div>
-            {confirmFlash && <div className="flash-ok">Pedido cobrado âœ“</div>}
+            {confirmFlash && <div className="flash-ok">Pedido cobrado ✓</div>}
           </>
         )}
 
@@ -797,7 +797,7 @@ export default function App() {
           <>
             <div className="filters">
               <button className="quick-btn" onClick={() => { setDateFrom(todayISO()); setDateTo(todayISO()); }}>Hoy</button>
-              <button className="quick-btn" onClick={() => { setDateFrom(weekAgoISO()); setDateTo(todayISO()); }}>Ãšltimos 7 dÃ­as</button>
+              <button className="quick-btn" onClick={() => { setDateFrom(weekAgoISO()); setDateTo(todayISO()); }}>Últimos 7 días</button>
               <button className="quick-btn" onClick={() => { setDateFrom('2000-01-01'); setDateTo(todayISO()); }}>Todo</button>
               <input className="date-input" type="date" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} />
               <span style={{color:'var(--muted)'}}>a</span>
@@ -807,21 +807,21 @@ export default function App() {
 
             <div className="stat-cards">
               <div className="stat-card"><div className="k">Ventas totales</div><div className="v">{fmt(totalVentas)}</div></div>
-              <div className="stat-card"><div className="k">NÂ° de pedidos</div><div className="v">{filteredOrders.length}</div></div>
+              <div className="stat-card"><div className="k">N° de pedidos</div><div className="v">{filteredOrders.length}</div></div>
               <div className="stat-card"><div className="k">Ticket promedio</div><div className="v">{fmt(ticketProm)}</div></div>
               <div className="stat-card"><div className="k">Para llevar / Mesa</div><div className="v" style={{fontSize:16}}>{fmt(ventasLlevar)} / {fmt(ventasMesa)}</div></div>
               <div className="stat-card"><div className="k">Efectivo / Yape</div><div className="v" style={{fontSize:16}}>{fmt(ventasEfectivo)} / {fmt(ventasYape)}</div></div>
             </div>
 
             <table>
-              <thead><tr><th>NÂ° Pedido</th><th>Hora</th><th>Tipo</th><th>Pago</th><th>Productos</th><th>Total</th><th></th></tr></thead>
+              <thead><tr><th>N° Pedido</th><th>Hora</th><th>Tipo</th><th>Pago</th><th>Productos</th><th>Total</th><th></th></tr></thead>
               <tbody>
                 {filteredOrders.map((o) => (
                   <tr key={o.id}>
                     <td className="mono-cell">#{o.orderNumber}</td>
                     <td className="mono-cell">{o.date} {o.time}</td>
                     <td>{o.type === 'llevar' ? 'Para llevar' : `Mesa ${o.table}`}</td>
-                    <td>{o.payment === 'yape' ? 'ðŸ“± Yape' : 'ðŸ’µ Efectivo'}</td>
+                    <td>{o.payment === 'yape' ? '📱 Yape' : '💵 Efectivo'}</td>
                     <td>{o.items.map((i) => `${i.qty}x ${i.name}`).join(', ')}</td>
                     <td className="mono-cell">{fmt(o.total)}</td>
                     <td><Trash2 size={16} className="del-icon" onClick={() => deleteSale(o.id)} /></td>
